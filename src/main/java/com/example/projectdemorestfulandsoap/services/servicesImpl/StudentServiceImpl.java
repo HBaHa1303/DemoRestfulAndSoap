@@ -40,6 +40,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDTO getStudentById(Long id) {
         StudentEntity studentEntity = studentRepository.getById(id);
+
+        if(studentEntity == null){
+            String messageResponse = String.format("Student with Id: %d is not found", id);
+            throw new StudentNotFoundException(messageResponse);
+        }
+
         StudentDTO studentDTO = new StudentDTO();
         BeanUtils.copyProperties(studentEntity, studentDTO);
         return studentDTO;
@@ -59,6 +65,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudentById(Long id) {
+        StudentEntity studentEntity = studentRepository.getReferenceById(id);
+
+        if(studentEntity == null){
+            String messageResponse = String.format("Student with Id: %d is not found", id);
+            throw new StudentNotFoundException(messageResponse);
+        }
+
         studentRepository.deleteById(id);
     }
 }

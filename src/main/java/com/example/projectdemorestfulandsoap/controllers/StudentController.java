@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("students")
+@RestController()
+@RequestMapping("students")
 public class StudentController {
     private StudentService studentService;
 
@@ -36,12 +37,10 @@ public class StudentController {
         return studentService.updateStudent(studentDTO);
     }
 
-    // handler method to handle delete student request
-
-    @DeleteMapping
-    public String deleteStudent(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable("id") Long id) {
         studentService.deleteStudentById(id);
         String messageResponse = String.format("Student with ID = %d is deleted", id);
-        return "messageResponse";
+        return messageResponse;
     }
 }
